@@ -1,7 +1,9 @@
 import 'package:curd_app/modules/Home_Screen/home_layout.dart';
+import 'package:curd_app/modules/Profile_Screen/profile_screen.dart';
 import 'package:curd_app/services/providers/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'modules/Favorites_Screen/favorites_screen.dart';
 import 'modules/Sign_in_Screen/signin_screen.dart';
 import 'modules/Sign_up_Screen/signup_screen.dart';
 
@@ -25,6 +27,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/signIn': (context) => SignIn(),
         '/signUp': (context) => SignUp(),
+        '/favorites': (context) => FavoritesScreen(),
+        '/profile': (context) => ProfileScreen(),
         '/home': (context) => const HomeLayout(),
       },
       theme: ThemeData(

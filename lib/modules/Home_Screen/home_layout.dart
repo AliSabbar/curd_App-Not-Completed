@@ -12,69 +12,91 @@ class HomeLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     var prov = Provider.of<CurdProvider>(context, listen: true);
     return Scaffold(
-        body: Column(
-      children: [
-        customAppBar(),
-        const SizedBox(
-          height: 50,
+        floatingActionButton: FloatingActionButton(
+          onPressed: ()  {
+            Provider.of<CurdProvider>(context, listen: false).getFav();
+            Navigator.pushNamed(context, '/favorites');
+          },
+          child: const Icon(Icons.favorite),
         ),
-        prov.isLoading
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : Expanded(
-                child: GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 200,
-                            childAspectRatio: 1,
-                            crossAxisSpacing: 20,
-                            mainAxisSpacing: 20),
-                    itemCount: prov.myProducts.length,
-                    itemBuilder: (BuildContext context, index) {
-                      return productItem(prov.myProducts[index]);
-                    }),
-              ),
-      ],
-    ));
+        body: Column(
+          children: [
+            customAppBar(),
+            const SizedBox(
+              height: 50,
+            ),
+            prov.isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Expanded(
+                    child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: 200,
+                                childAspectRatio: 1,
+                                crossAxisSpacing: 20,
+                                mainAxisSpacing: 20),
+                        itemCount: prov.myProducts.length,
+                        itemBuilder: (BuildContext context, index) {
+                          return productItem(prov.myProducts[index]);
+                        }),
+                  ),
+          ],
+        ));
   }
 
   Widget productItem(model) {
-    return Container(
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-          color: Colors.black38, borderRadius: BorderRadius.circular(15)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-            child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.red,
-                    image: DecorationImage(
-                      image: NetworkImage("${model['image']}"),
-                      fit: BoxFit.cover,
-                    ))),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Text(
-            "${model['name']}",
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Text(
-            "\$${model['price']}",
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      ),
-    );
+      return Builder(
+        builder: (context) {
+          return Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                color: Colors.black38, borderRadius: BorderRadius.circular(15)),
+            child: Stack(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              image: DecorationImage(
+                                image: NetworkImage("${model.image}"),
+                                fit: BoxFit.cover,
+                              ))),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "${model.name}",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "\$${model.price}",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+                CircleAvatar(
+                    child: IconButton(
+                        onPressed: () {
+                          Provider.of<CurdProvider>(context, listen: false)
+                              .addToFav(product_id: model.id);
+                        },
+                        icon: const Icon(Icons.favorite))),
+              ],
+            ),
+          );
+        }
+      );
   }
 }

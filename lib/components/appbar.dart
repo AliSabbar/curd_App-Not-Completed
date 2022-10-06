@@ -55,7 +55,18 @@ Widget customAppBar() {
                   ),
                 ],
               ),
-            ))
+            )),
+        Positioned(
+            top: 40,
+            child: IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/profile');
+                },
+                icon: const Icon(
+                  Icons.person,
+                  size: 30,
+                  color: Colors.white,
+                ))),
       ],
     );
   });

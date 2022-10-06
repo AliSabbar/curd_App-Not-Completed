@@ -7,7 +7,7 @@ class ProductsModel {
     required this.data,
   });
   factory ProductsModel.fromJson(json) {
-    return ProductsModel(
+    return ProductsModel( 
         status: json['status'], data: Data.fromJson(json['data']));
   }
 }
@@ -18,13 +18,18 @@ class Data {
     required this.products,
   });
   factory Data.fromJson(json) {
-    return Data(products: json['products']);
+    return Data(products: productsList(json['products']));
   }
 }
 
+List<dynamic> productsList(list){
+  List<dynamic> products_list = list.map((e)=>Products.fromJson(e)).toList();
+  return products_list;
+}
+
 class Products {
-  int id;
-  double price;
+  num id;
+  num price;
   String image;
   String name;
   String description;
